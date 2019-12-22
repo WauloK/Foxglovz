@@ -1,8 +1,9 @@
 #include "foxsprites.h"
+#include "foxobjects.c"
 
 void fox_spriteat(char x, char y, unsigned char spriteno) {
 	int location;
-	int screenOrigin = 28672;
+	int screenOrigin = gameObj.baseGraphics;
 	location = screenOrigin + (32 * y + x); // 0 > x > 31 | 0 > y > 63
 	if (x < 0 || x > 31 || y < 0 || y > 63) return; // Maximum VZ screen values
     fox_asm_spriteat(location, spriteno);

@@ -11,7 +11,7 @@
 //#include "foxfont.h"
 //#include "font.h"
 //#include "foxfont.c"
-
+#include "audio.c"
 #include "foxsprites.c"
-#include "foxobjects.c"
+#include "foxscoring.c"
 
