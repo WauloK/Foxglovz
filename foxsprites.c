@@ -1,9 +1,9 @@
 #include "foxsprites.h"
-//#include "foxobjects.c"
+#include "foxobjects.c"
 
 void fox_spriteat(char x, char y, unsigned char spriteno) {
 	int location;
-	int screenOrigin = gameObj.baseGraphics;
+	int screenOrigin = gameobj.baseGraphics;
 	location = screenOrigin + (32 * y + x); // 0 > x > 31 | 0 > y > 63
 	if (x < 0 || x > 31 || y < 0 || y > 63) return; // Maximum VZ screen values
     fox_asm_spriteat(location, spriteno);
@@ -31,10 +31,9 @@ bool fox_checkcollision(int x1, int y1, char width1, char height1, char collOffs
 // Updates the animation object info ready for blitting to the screen
 void fox_doanimation() {
 	int i;
-	for (i=0;i < gameObj.noOfAnimatedSprites; i++) {
+	for (i=0;i < gameobj.noOfAnimatedSprites; i++) {
 		// Count down updates (delay) before changing sprite offset
 		animobj[i].currentUpdateCount--;
-		displayScore(10*i, 0, (long)animobj[i].spriteOffset);		
 		if (animobj[i].currentUpdateCount < 0) {
 			animobj[i].currentUpdateCount = animobj[i].updatesPerFrame;
 			animobj[i].spriteOffset+=animobj[i].animationDirection;
@@ -57,7 +56,7 @@ void fox_doanimation() {
 // Update all the animated sprites onscreen
 void fox_updatesprites() {
 	int i,j;
-	for (i=0;i<gameObj.noOfSprites;i++) {
+	for (i=0;i<gameobj.noOfSprites;i++) {
 		if (spriteobj[i].isEnabled) {
 			if (spriteobj[i].isAnimated) {
 				j = spriteobj[i].animObjNo;

@@ -1,3 +1,3 @@
 #include "foxobjects.h"
 
-struct gameobject gameObj;
+struct gameobject gameobj;

@@ -2,11 +2,11 @@
 
 void fox_doscore() {
 	// check for score updates
-	if (gameObj.scoreCount) {
-		gameObj.scoreCount -= gameObj.scoreCountStep;
-		gameObj.score += gameObj.scoreCountStep;
-		displayScore(gameObj.scoreX, gameObj.scoreY, gameObj.score);
-		if ( gameObj.scoreCount < 0 ) gameObj.scoreCount = 0;
+	if (gameobj.scoreCount) {
+		gameobj.scoreCount -= gameobj.scoreCountStep;
+		gameobj.score += gameobj.scoreCountStep;
+		displayScore(gameobj.scoreX, gameobj.scoreY, gameobj.score);
+		if ( gameobj.scoreCount < 0 ) gameobj.scoreCount = 0;
 	}
-	if (gameObj.score > gameObj.hiScore) gameObj.hiScore = gameObj.score;
+	if (gameobj.score > gameobj.hiScore) gameobj.hiScore = gameobj.score;
 }
