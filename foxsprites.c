@@ -1,5 +1,5 @@
 #include "foxsprites.h"
-#include "foxobjects.c"
+//#include "foxobjects.c"
 
 void fox_spriteat(char x, char y, unsigned char spriteno) {
 	int location;
@@ -17,6 +17,7 @@ bool fox_checkcollision(int x1, int y1, char width1, char height1, int x2, int y
 		return false;
 }
 
+
 /*  Uncomment to use offsets
 bool fox_checkcollision(int x1, int y1, char width1, char height1, char collOffsetX1, char collOffsetY1, 
 	int x2, int y2, char width2, char height2, char collOffsetX2, char collOffsetY2) {
@@ -26,3 +27,45 @@ bool fox_checkcollision(int x1, int y1, char width1, char height1, char collOffs
 		y1 - collOffsetY1 > y2 ) return true;
 		return false;
 } */
+
+// Updates the animation object info ready for blitting to the screen
+void fox_doanimation() {
+	int i;
+	for (i=0;i < gameObj.noOfAnimatedSprites; i++) {
+		// Count down updates (delay) before changing sprite offset
+		animobj[i].currentUpdateCount--;
+		displayScore(10*i, 0, (long)animobj[i].spriteOffset);		
+		if (animobj[i].currentUpdateCount < 0) {
+			animobj[i].currentUpdateCount = animobj[i].updatesPerFrame;
+			animobj[i].spriteOffset+=animobj[i].animationDirection;
+			animobj[i].currentSpriteNo--;
+			if (animobj[i].currentSpriteNo < 1) {
+				 // We've displayed all sprites in this animation
+				animobj[i].currentSpriteNo = animobj[i].noOfSprites;
+				if (animobj[i].animDirBounce == true) {
+					if (animobj[i].animationDirection == 1) { animobj[i].animationDirection=-1; }
+					else { animobj[i].animationDirection = 1;}
+				}
+				else {
+					animobj[i].spriteOffset = 0;
+				}
+			}
+		}
+	}
+} 
+
+// Update all the animated sprites onscreen
+void fox_updatesprites() {
+	int i,j;
+	for (i=0;i<gameObj.noOfSprites;i++) {
+		if (spriteobj[i].isEnabled) {
+			if (spriteobj[i].isAnimated) {
+				j = spriteobj[i].animObjNo;
+				fox_spriteat(spriteobj[i].xpos, spriteobj[i].ypos, animobj[j].startSprite+animobj[j].spriteOffset);
+			}
+			else {
+				fox_spriteat(spriteobj[i].xpos, spriteobj[i].ypos, spriteobj[2].spriteNo);
+			}
+		}
+	}
+}
