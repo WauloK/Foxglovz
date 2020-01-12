@@ -2,5 +2,5 @@
 #define _FOXOBJECTS_H_
 
 void fox_doscore();
-
+void displayScore();
 #endif

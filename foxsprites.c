@@ -1,5 +1,5 @@
 #include "foxsprites.h"
-#include "foxobjects.c"
+//#include "foxobjects.c"
 
 void fox_spriteat(char x, char y, unsigned char spriteno) {
 	int location;
@@ -37,13 +37,24 @@ void fox_doanimation() {
 		if (animobj[i].currentUpdateCount < 0) {
 			animobj[i].currentUpdateCount = animobj[i].updatesPerFrame;
 			animobj[i].spriteOffset+=animobj[i].animationDirection;
-			animobj[i].currentSpriteNo--;
-			if (animobj[i].currentSpriteNo < 1) {
+			if (animobj[i].isAnimated) {
+				animobj[i].currentSpriteNo--;
+			}
+			if (animobj[i].currentSpriteNo < 1 && animobj[i].isEnabled) {
 				 // We've displayed all sprites in this animation
+				 // Check if it needs to be disabled
+				 if ( animobj[i].oneShot) { 
+					 animobj[i].isEnabled = false;
+					 continue;
+				 }
 				animobj[i].currentSpriteNo = animobj[i].noOfSprites;
 				if (animobj[i].animDirBounce == true) {
-					if (animobj[i].animationDirection == 1) { animobj[i].animationDirection=-1; }
-					else { animobj[i].animationDirection = 1;}
+					if (animobj[i].animationDirection == 1) {
+						animobj[i].animationDirection=-1;
+					}
+					else {
+						animobj[i].animationDirection = 1;
+					}
 				}
 				else {
 					animobj[i].spriteOffset = 0;
@@ -55,16 +66,10 @@ void fox_doanimation() {
 
 // Update all the animated sprites onscreen
 void fox_updatesprites() {
-	int i,j;
+	int i;
 	for (i=0;i<gameobj.noOfSprites;i++) {
-		if (spriteobj[i].isEnabled) {
-			if (spriteobj[i].isAnimated) {
-				j = spriteobj[i].animObjNo;
-				fox_spriteat(spriteobj[i].xpos, spriteobj[i].ypos, animobj[j].startSprite+animobj[j].spriteOffset);
-			}
-			else {
-				fox_spriteat(spriteobj[i].xpos, spriteobj[i].ypos, spriteobj[2].spriteNo);
-			}
+		if (animobj[i].isEnabled) {
+			fox_spriteat(animobj[i].xpos, animobj[i].ypos, animobj[i].startSprite+animobj[i].spriteOffset);
 		}
 	}
 }
